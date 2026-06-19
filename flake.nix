@@ -22,48 +22,19 @@
           hash = "sha256-Ly4fK9un7EDSFZYIRBaNcUX+ihZLC6aFabntDKi/MH8=";
         };
 
-        bunDeps = pkgs.stdenv.mkDerivation {
-          name = "tinacms-cli-bun-deps";
-          inherit src;
-          nativeBuildInputs = [ pkgs.bun pkgs.cacert ];
-          postPatch = ''
-            cp ${./bun.lock} bun.lock
-          '';
-          buildPhase = ''
-            export BUN_INSTALL_CACHE_DIR=$TMPDIR/bun-cache
-            bun install --production --ignore-scripts --frozen-lockfile
-          '';
-          installPhase = ''
-            mkdir -p $out
-            if [ -d node_modules ]; then
-              cp -r node_modules $out/
-            fi
-          '';
-          dontFixup = true;
-          outputHashMode = "recursive";
-          outputHashAlgo = "sha256";
-          outputHash = "sha256-KDgvibF3h2lvtGo+HenjIxaLX1dr28aoJD7O1NHNWTk=";
-        };
-
-        tinacms-cli = pkgs.stdenv.mkDerivation {
+        tinacms-cli = pkgs.buildNpmPackage {
           pname = "tinacms-cli";
           inherit version src;
-          nativeBuildInputs = [ pkgs.bun pkgs.makeWrapper ];
-          
-          buildPhase = ''
-            if [ -d ${bunDeps}/node_modules ]; then
-              cp -r ${bunDeps}/node_modules ./
-              chmod -R +w node_modules
-            fi
+          postPatch = ''
+            cp ${./package-lock.json} package-lock.json
           '';
-
-          installPhase = ''
-            mkdir -p $out/libexec/tinacms-cli $out/bin
-            cp -r . $out/libexec/tinacms-cli
-            
-            makeWrapper ${pkgs.bun}/bin/bun $out/bin/tinacms \
-              --add-flags "$out/libexec/tinacms-cli/bin/tinacms"
-          '';
+          npmDepsFetcherVersion = 2;
+          npmDepsHash = "sha256-ELm/HeiO1F/4cBXzZJnB8TZdvG1Yq9p9Bo4nrJhIPuM=";
+          npmFlags = [
+            "--ignore-scripts"
+            "--legacy-peer-deps"
+          ];
+          dontNpmBuild = true;
 
           meta = with pkgs.lib; {
             description = "TinaCMS CLI";
