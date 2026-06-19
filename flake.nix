@@ -26,9 +26,12 @@
           name = "tinacms-cli-bun-deps";
           inherit src;
           nativeBuildInputs = [ pkgs.bun pkgs.cacert ];
+          postPatch = ''
+            cp ${./bun.lock} bun.lock
+          '';
           buildPhase = ''
             export BUN_INSTALL_CACHE_DIR=$TMPDIR/bun-cache
-            bun install --production --ignore-scripts
+            bun install --production --ignore-scripts --frozen-lockfile
           '';
           installPhase = ''
             mkdir -p $out
