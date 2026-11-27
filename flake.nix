@@ -26,11 +26,11 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
-        version = "2.5.1";
+        version = "4.0.5";
 
         src = pkgs.fetchurl {
           url = "https://registry.npmjs.org/@tinacms/cli/-/cli-${version}.tgz";
-          hash = "sha256-Ly4fK9un7EDSFZYIRBaNcUX+ihZLC6aFabntDKi/MH8=";
+          hash = "sha512-yDp+GkzO/+VMuAKDNrVgGnsEACwo7lNur6CkaH7O9+RgDU0c79sVvgo+hfjQngoGmrNF7TDjBJshRymUKr4zHA==";
         };
 
         tinacms-cli = pkgs.buildNpmPackage {
@@ -40,7 +40,7 @@
             cp ${./package-lock.json} package-lock.json
           '';
           npmDepsFetcherVersion = 2;
-          npmDepsHash = "sha256-ELm/HeiO1F/4cBXzZJnB8TZdvG1Yq9p9Bo4nrJhIPuM=";
+          npmDepsHash = "sha256-ug0pZVkEgy2QJezG14Ma9YkeaCBHihhoixM6yTfPzNc=";
           npmFlags = [
             "--ignore-scripts"
             "--legacy-peer-deps"

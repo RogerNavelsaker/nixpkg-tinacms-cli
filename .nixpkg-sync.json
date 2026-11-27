@@ -1,0 +1,11 @@
+{
+  "kind": "npm",
+  "upstream": "@tinacms/cli",
+  "tag_regex": "^v[0-9]+\\.[0-9]+\\.[0-9]+$",
+  "tag_prefix": "v",
+  "version_file": "flake.nix",
+  "version_jq": "",
+  "version_grep": "version = \"[0-9][^\"]*\"",
+  "pinned_paths": [],
+  "sync_script": "bash scripts/sync-from-npm.sh"
+}
